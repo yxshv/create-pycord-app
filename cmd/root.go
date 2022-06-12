@@ -19,7 +19,7 @@ var qs = []*survey.Question{
 	},
 	{
 		Name:   "dir",
-		Prompt: &survey.Input{Message: "What should be the directory's name?", Default: "."},
+		Prompt: &survey.Input{Message: "What should be the directory's name?", Default: "./"},
 		Validate: func(ans interface{}) error {
 			dir := ans.(string)
 			if dir == "." || dir == "./" {
@@ -47,17 +47,53 @@ var rootCmd = &cobra.Command{
 
 		fmt.Println(utils.Colorize("blue", "Creating a new pycord app...\n"))
 
+		var (
+			Name  string
+			Dir   string
+			Token string
+
+			err error
+		)
+
+		utils.Ask(utils.Question{
+			Message: "What is the bot's name?",
+			Validate: func(value string) error {
+				return nil
+			},
+			Default: "the greatest bot",
+		}, &Name)
+
+		utils.Ask(utils.Question{
+			Message: "What should be the directory's name?",
+			Validate: func(value string) error {
+				if value == "." || value == "./" {
+					return nil
+				}
+				if _, err := os.Stat("./" + value); err != nil {
+					return nil
+				}
+				return fmt.Errorf("directory `%s` already exists", value)
+			},
+			Default: "./",
+		}, &Dir)
+
+		utils.Ask(utils.Question{
+			Message: "Bots token?",
+			Validate: func(value string) error {
+				return nil
+			},
+			Default: "",
+		}, &Token)
+
 		ans := struct {
-			Name  string `survey:"project-name"`
-			Dir   string `survey:"dir"`
-			Token string `survey:"token"`
+			Name  string
+			Dir   string
+			Token string
 		}{}
 
-		err := survey.Ask(qs, &ans)
-		if err != nil {
-			fmt.Println(err.Error())
-			return
-		}
+		ans.Name = Name
+		ans.Dir = Dir
+		ans.Token = Token
 
 		fmt.Println()
 
@@ -72,6 +108,7 @@ var rootCmd = &cobra.Command{
 		}
 
 		time.Sleep(1 * time.Second)
+
 		s.Stop()
 
 		s = spinner.New(spinner.CharSets[34], 100*time.Millisecond)
