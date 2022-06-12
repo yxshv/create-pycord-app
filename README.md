@@ -6,6 +6,8 @@ Set up a pycord app by running a single command
 
 ---
 
+![](https://us-east-1.tixte.net/uploads/kekda.wants.solutions/Code_-_Insiders_Ee6tEDiNwl.gif)
+
 ### Installation
 
 ```
