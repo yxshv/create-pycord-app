@@ -9,10 +9,11 @@ Set up a pycord app by running a single command
 ![](https://us-east-1.tixte.net/uploads/kekda.wants.solutions/Code_-_Insiders_Ee6tEDiNwl.gif)
 
 ### Installation
-
+If u have go installed, u can do
 ```
 go install github.com/kekda-py/create-pycord-app@latest
 ```
+If u dont then please download the executable `create-pycord-app.exe` from the repo
 
 ### Usage
 
